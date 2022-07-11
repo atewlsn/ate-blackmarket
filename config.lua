@@ -23,8 +23,17 @@ Config.Itemlist = {
     }, 
 }
 
+--ped system
+Config.atepeds = {
+
+	[1] = { handle = nil, model ="a_m_y_latino_01", coords = vector3(1534.2, 787.01, 77.45), heading = 48.77,  anim = { type = 1, name = "CODE_HUMAN_CROSS_ROAD_WAIT"} }, -- scene
+	
+}
+
+
+--discord log
 Config.discord = {
-    ['webhook'] = 'https://discord.com/api/webhooks/995873780444434542/9wRPmHdhAxlg2fWT9K45z6RemYbi7Sk-BRvnBUQeFoAcTJ0OwLsdlHG_rN57Wr61WaO8',
-    ['name'] = 'ATE Gunshop',
-    ['image'] = 'https://cdn.discordapp.com/attachments/995872924466684047/995874012712423494/np_diamond-skull.png'
+    ['webhook'] = '2', --create webhook link
+    ['name'] = 'ATE Blackmarket', -- webhook name
+    ['image'] = '2' -- webhook profile photo
 }
