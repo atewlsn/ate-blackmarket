@@ -1,11 +1,15 @@
 local QBCore = exports['qb-core']:GetCoreObject()
 PlayerJob = {}
 
+RegisterCommand('baboli', function()
+    TriggerEvent('silah:clmenu')
+end)
+
 RegisterNetEvent('silah:clmenu', function()
     local Menu = {
         {
-            header = "Silahcı",
-            txt = "Items",
+            header = "Blackmarket",
+            txt = "David",
             params = {
                 event = "silah:clesyamenu",
             }
@@ -30,10 +34,10 @@ RegisterNetEvent('silah:clesyamenu', function()
 for k, v in pairs(Config.Itemlist) do
     harbig[#harbig+1] = {
         header = v.label,
-        txt = "Item: " .. v.label .. " Price: " .. v.price .. "$".. " ".." " .." Amount:" .." " ..v.count,
+        txt = "Eşya: " .. v.label .. " Tutar: " .. v.price .. "$".. " ".." " .." Adet:" .." " ..v.count,
         params = {
             isServer = true,
-            event = "silahci:itemal",
+            event = "gunshop:itemal",
             args = {
                 price = v.price,
                 item = v.item,
@@ -50,24 +54,53 @@ harbig[#harbig+1] = {
 end)
 
 Citizen.CreateThread(function ()
-    exports['qb-target']:AddBoxZone("gunshop",vector3(Config.Coords.x,Config.Coords.y,Config.Coords.z), 3, 3, {
-        name = "gunshop",
-        heading = Config.Coords.w,
+    exports['qb-target']:AddBoxZone("blackmarket",vector3(1533.5, 787.71, 77.45), 3, 3, {
+        name = "blackmarket",
+        heading = 228.81,
         debugPoly = false,
     }, {
         options = {
             {
                 type = "Client",
-                event = "silah:clmenu",
+                event = "sont",
                 icon = "fas fa-gun",
-                label = 'Gun Shop',
-                job = Config.AuthJob
+                label = 'David Wlsn',
+                job = 'all',
 
             },
         },
         distance = 1.5
     })
 end)
+
+RegisterNetEvent('sont', function()
+    TriggerServerEvent('atetest')
+end)
+
+
+Citizen.CreateThread(function()
+	for k,v in pairs(Config.atepeds) do
+		RequestModel(v.model)
+		while not HasModelLoaded(v.model) do Citizen.Wait(1) end
+		v.handle = CreatePed(4, v.model, v.coords.x, v.coords.y, v.coords.z-1.0, v.heading, false, false)
+		GiveWeaponToPed(v.handle, v.weapon, 10, 1, 1)
+		SetPedFleeAttributes(v.handle, 0, 0)
+		SetPedDropsWeaponsWhenDead(v.handle, false)
+		SetPedDiesWhenInjured(v.handle, false)
+		SetEntityInvincible(v.handle , true)
+		FreezeEntityPosition(v.handle, true)
+		SetBlockingOfNonTemporaryEvents(v.handle, true)
+		if v.anim.type == 1 then
+			TaskStartScenarioInPlace(v.handle, v.anim.name, 0, true)
+		elseif v.anim.type == 2 then
+			RequestAnimDict(v.anim.dict)
+			while not HasAnimDictLoaded(v.anim.dict) do Citizen.Wait(1) end
+			TaskPlayAnim(v.handle, v.anim.dict, v.anim.name, 8.0, 1, -1, 49, 0, false, false, false)
+		end
+	end
+end)
+
+
 
 RegisterNetEvent('QBCore:Client:OnPlayerLoaded')
 AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
